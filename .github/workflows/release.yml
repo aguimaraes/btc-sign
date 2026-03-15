@@ -87,10 +87,11 @@ jobs:
         with:
           path: artifacts
 
-      - name: Generate checksums
+      - name: Flatten artifacts and generate checksums
         run: |
-          cd artifacts
-          find . -type f -name 'btc-sign-*' -exec mv {} . \;
+          mkdir -p out
+          find artifacts -type f -exec cp {} out/ \;
+          cd out
           sha256sum btc-sign-* > SHA256SUMS.txt
           cat SHA256SUMS.txt
 
@@ -98,8 +99,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            artifacts/btc-sign-*
-            artifacts/SHA256SUMS.txt
+            out/btc-sign-*
+            out/SHA256SUMS.txt
           body: |
             ## Verify checksums
 
