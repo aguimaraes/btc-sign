@@ -1,0 +1,25 @@
+[package]
+name = "btc-sign"
+version = "0.0.1"
+edition = "2021"
+description = "Minimal offline Bitcoin transaction signer for cold storage"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/aguimaraes/btc-sign"
+keywords = ["bitcoin", "psbt", "signing", "cold-storage", "offline"]
+categories = ["cryptography", "command-line-utilities"]
+
+[dependencies]
+bitcoin = { version = "0.32", features = ["base64"] }
+zeroize = { version = "1", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+strip = true
+lto = true
+opt-level = "s"
