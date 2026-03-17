@@ -12,8 +12,8 @@ pub mod test_helpers {
     use bitcoin::blockdata::transaction::{OutPoint, Sequence, Transaction, TxIn, TxOut};
     use bitcoin::blockdata::witness::Witness;
     use bitcoin::psbt::Psbt;
-    use bitcoin::transaction::Version;
     use bitcoin::secp256k1::{self, Secp256k1};
+    use bitcoin::transaction::Version;
     use bitcoin::{Amount, Network, PrivateKey, Txid};
 
     /// Private key = 1 (same test vector as btc-keygen).
@@ -36,10 +36,9 @@ pub mod test_helpers {
     pub fn make_test_psbt() -> Psbt {
         let (_, input_script) = test_keypair();
 
-        let txid: Txid =
-            "0000000000000000000000000000000000000000000000000000000000000001"
-                .parse()
-                .unwrap();
+        let txid: Txid = "0000000000000000000000000000000000000000000000000000000000000001"
+            .parse()
+            .unwrap();
 
         let tx = Transaction {
             version: Version::TWO,
@@ -70,10 +69,9 @@ pub mod test_helpers {
     pub fn make_high_fee_psbt() -> Psbt {
         let (_, input_script) = test_keypair();
 
-        let txid: Txid =
-            "0000000000000000000000000000000000000000000000000000000000000001"
-                .parse()
-                .unwrap();
+        let txid: Txid = "0000000000000000000000000000000000000000000000000000000000000001"
+            .parse()
+            .unwrap();
 
         let tx = Transaction {
             version: Version::TWO,
@@ -103,14 +101,12 @@ pub mod test_helpers {
     pub fn make_multi_input_psbt() -> Psbt {
         let (_, input_script) = test_keypair();
 
-        let txid1: Txid =
-            "0000000000000000000000000000000000000000000000000000000000000001"
-                .parse()
-                .unwrap();
-        let txid2: Txid =
-            "0000000000000000000000000000000000000000000000000000000000000002"
-                .parse()
-                .unwrap();
+        let txid1: Txid = "0000000000000000000000000000000000000000000000000000000000000001"
+            .parse()
+            .unwrap();
+        let txid2: Txid = "0000000000000000000000000000000000000000000000000000000000000002"
+            .parse()
+            .unwrap();
 
         let tx = Transaction {
             version: Version::TWO,

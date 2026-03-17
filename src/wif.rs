@@ -27,7 +27,10 @@ impl std::fmt::Display for WifError {
         match self {
             WifError::InvalidWif(msg) => write!(f, "invalid WIF: {}", msg),
             WifError::NotCompressed => {
-                write!(f, "WIF key is not compressed (only compressed keys supported)")
+                write!(
+                    f,
+                    "WIF key is not compressed (only compressed keys supported)"
+                )
             }
             WifError::NotMainnet => {
                 write!(f, "WIF key is not mainnet (only mainnet supported)")
@@ -40,8 +43,7 @@ impl std::fmt::Display for WifError {
 ///
 /// Only accepts compressed mainnet WIF keys (prefix K or L, 52 chars).
 pub fn decode_wif(wif: &str) -> Result<WifKey, WifError> {
-    let private_key =
-        PrivateKey::from_wif(wif).map_err(|e| WifError::InvalidWif(e.to_string()))?;
+    let private_key = PrivateKey::from_wif(wif).map_err(|e| WifError::InvalidWif(e.to_string()))?;
 
     if !private_key.compressed {
         return Err(WifError::NotCompressed);

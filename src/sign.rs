@@ -147,8 +147,7 @@ mod tests {
     #[test]
     fn test_sign_populates_partial_sigs() {
         let mut psbt = test_helpers::make_test_psbt();
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
 
         let signed = sign_psbt(&mut psbt, &wif_key).unwrap();
         assert_eq!(signed, 1);
@@ -160,8 +159,7 @@ mod tests {
     fn test_sign_wrong_key_fails() {
         let mut psbt = test_helpers::make_test_psbt();
         // Private key = 2 does not match the PSBT inputs (key = 1).
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4").unwrap();
 
         let result = sign_psbt(&mut psbt, &wif_key);
         assert!(matches!(result, Err(SignError::NoMatchingInputs)));
@@ -171,8 +169,7 @@ mod tests {
     #[test]
     fn test_count_matching() {
         let psbt = test_helpers::make_test_psbt();
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
 
         let count = count_matching_inputs(&psbt, &wif_key).unwrap();
         assert_eq!(count, 1);
@@ -182,8 +179,7 @@ mod tests {
     #[test]
     fn test_count_no_match() {
         let psbt = test_helpers::make_test_psbt();
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4").unwrap();
 
         let count = count_matching_inputs(&psbt, &wif_key).unwrap();
         assert_eq!(count, 0);
@@ -193,8 +189,7 @@ mod tests {
     #[test]
     fn test_signature_verifies() {
         let mut psbt = test_helpers::make_test_psbt();
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
 
         sign_psbt(&mut psbt, &wif_key).unwrap();
 
@@ -206,12 +201,7 @@ mod tests {
         let utxo = psbt.inputs[0].witness_utxo.as_ref().unwrap();
         let mut cache = SighashCache::new(&psbt.unsigned_tx);
         let sighash = cache
-            .p2wpkh_signature_hash(
-                0,
-                &utxo.script_pubkey,
-                utxo.value,
-                EcdsaSighashType::All,
-            )
+            .p2wpkh_signature_hash(0, &utxo.script_pubkey, utxo.value, EcdsaSighashType::All)
             .unwrap();
         let msg = Message::from_digest(sighash.to_byte_array());
         let secp_pubkey = pubkey.inner;
@@ -223,8 +213,7 @@ mod tests {
     #[test]
     fn test_sign_multiple_inputs() {
         let mut psbt = test_helpers::make_multi_input_psbt();
-        let wif_key =
-            decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        let wif_key = decode_wif("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
 
         let signed = sign_psbt(&mut psbt, &wif_key).unwrap();
         assert_eq!(signed, 2);

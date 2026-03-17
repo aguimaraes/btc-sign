@@ -72,7 +72,11 @@ fn test_inspect_success() {
         .output()
         .unwrap();
 
-    assert!(output.status.success(), "stderr: {}", String::from_utf8_lossy(&output.stderr));
+    assert!(
+        output.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
     let stderr = String::from_utf8(output.stderr).unwrap();
     assert!(stderr.contains("Inputs (1):"));
     assert!(stderr.contains("Outputs (1):"));
@@ -148,7 +152,11 @@ fn test_sign_success() {
 
     {
         let stdin = child.stdin.as_mut().unwrap();
-        writeln!(stdin, "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        writeln!(
+            stdin,
+            "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn"
+        )
+        .unwrap();
         writeln!(stdin, "approve").unwrap();
     }
 
@@ -181,7 +189,11 @@ fn test_sign_stdout_base64() {
 
     {
         let stdin = child.stdin.as_mut().unwrap();
-        writeln!(stdin, "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        writeln!(
+            stdin,
+            "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn"
+        )
+        .unwrap();
         writeln!(stdin, "approve").unwrap();
     }
 
@@ -190,7 +202,10 @@ fn test_sign_stdout_base64() {
 
     // Stdout should be valid base64 PSBT.
     let stdout = String::from_utf8(output.stdout).unwrap();
-    let parsed: Psbt = stdout.trim().parse().expect("stdout should be valid base64 PSBT");
+    let parsed: Psbt = stdout
+        .trim()
+        .parse()
+        .expect("stdout should be valid base64 PSBT");
     assert!(!parsed.inputs[0].partial_sigs.is_empty());
 }
 
@@ -216,7 +231,11 @@ fn test_sign_abort_no_approve() {
 
     {
         let stdin = child.stdin.as_mut().unwrap();
-        writeln!(stdin, "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        writeln!(
+            stdin,
+            "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn"
+        )
+        .unwrap();
         writeln!(stdin, "no").unwrap();
     }
 
@@ -250,7 +269,11 @@ fn test_sign_wrong_key() {
     {
         let stdin = child.stdin.as_mut().unwrap();
         // Private key = 2 does not match the PSBT input (key = 1).
-        writeln!(stdin, "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4").unwrap();
+        writeln!(
+            stdin,
+            "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4"
+        )
+        .unwrap();
         writeln!(stdin, "approve").unwrap();
     }
 
@@ -304,10 +327,7 @@ fn test_no_subcommand() {
 /// 12.11 — --help exits 0.
 #[test]
 fn test_help() {
-    let output = Command::new(btc_sign_bin())
-        .arg("--help")
-        .output()
-        .unwrap();
+    let output = Command::new(btc_sign_bin()).arg("--help").output().unwrap();
     assert!(output.status.success());
     let stdout = String::from_utf8(output.stdout).unwrap();
     assert!(stdout.contains("inspect"));
@@ -343,7 +363,11 @@ fn test_no_extra_files() {
 
     {
         let stdin = child.stdin.as_mut().unwrap();
-        writeln!(stdin, "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn").unwrap();
+        writeln!(
+            stdin,
+            "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn"
+        )
+        .unwrap();
         writeln!(stdin, "approve").unwrap();
     }
 
@@ -370,7 +394,15 @@ fn test_no_network_dependencies() {
         .unwrap();
 
     let tree = String::from_utf8(output.stdout).unwrap();
-    let banned = ["reqwest", "hyper", "tokio", "async-std", "surf", "ureq", "curl"];
+    let banned = [
+        "reqwest",
+        "hyper",
+        "tokio",
+        "async-std",
+        "surf",
+        "ureq",
+        "curl",
+    ];
     for crate_name in banned {
         assert!(
             !tree.contains(crate_name),

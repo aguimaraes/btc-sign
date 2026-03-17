@@ -96,10 +96,7 @@ pub fn display_psbt(psbt: &Psbt, w: &mut impl Write) -> std::io::Result<()> {
             writeln!(w, "Fee:       NEGATIVE (outputs exceed inputs!)")?;
         }
     } else {
-        writeln!(
-            w,
-            "Fee:       cannot calculate (input amounts unknown)"
-        )?;
+        writeln!(w, "Fee:       cannot calculate (input amounts unknown)")?;
     }
 
     Ok(())
